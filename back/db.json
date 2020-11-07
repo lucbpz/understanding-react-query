@@ -1,0 +1,38 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "imageUrl": "https://i0.wp.com/unaaldia.hispasec.com/wp-content/uploads/2020/02/Chrome-extensions.jpg?fit=708%2C377&ssl=1",
+      "imageAlt": "Chrome extension",
+      "publishDate": "22 Oct 2020",
+      "title": "How to build a Chrome extension that flips tabs every X seconds",
+      "minRead": 4,
+      "tags": [
+        "JavaScript"
+      ]
+    },
+    {
+      "id": 2,
+      "imageUrl": "https://s1.eestatic.com/2018/12/11/actualidad/Actualidad_359978609_130393971_1024x576.jpg",
+      "imageAlt": "Twitter bot",
+      "publishDate": "15 Oct 2020",
+      "title": "Building a Twitter bot to auto respond clients",
+      "minRead": 6,
+      "tags": [
+        "NodeJS"
+      ]
+    },
+    {
+      "id": 3,
+      "imageUrl": "https://www.redhat.com/cms/managed-files/monolithic-vs-microservices.png",
+      "imageAlt": "Microservices",
+      "publishDate": "8 Oct 2020",
+      "title": "Understanding a microservice architecture",
+      "minRead": 2,
+      "tags": [
+        "Kafka",
+        "NodeJS"
+      ]
+    }
+  ]
+}

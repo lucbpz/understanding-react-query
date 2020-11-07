@@ -1,0 +1,14 @@
+{
+  "name": "understanding-react-query-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Lucas Bernalte",
+  "license": "MIT",
+  "dependencies": {
+    "json-server": "^0.16.2"
+  },
+  "scripts": {
+    "start": "json-server db.json --port 3004",
+    "start:watch": "json-server --watch db.json --port 3004"
+  }
+}
