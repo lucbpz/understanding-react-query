@@ -39,6 +39,13 @@ All of this is done with a regular fetch, wrapped in an `api.js` file that only 
 
 ## Steps
 
+1. Add React Query to front.
+2. Wrap App with React Query Provider.
+3. Replace GET posts with useQuery.
+4. Replace Create, Edit and Delete with useMutation.
+5. Invalidate GET posts on mutation success.
+6. Optimistic update on Create, Edit and Delete.
+
 ## Licenses
 
 **© Copyright 2020 Lucas Bernalte**
