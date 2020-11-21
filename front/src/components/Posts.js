@@ -5,21 +5,47 @@ import { Box, Button, Flex, useDisclosure } from '@chakra-ui/core';
 import CreateEditPostModal from './CreateEditPostModal';
 import DeletePostModal from './DeletePostModal';
 import { createPost, deletePost, editPost, getPosts } from '../api/api';
+import {useQuery, useMutation, useQueryCache} from 'react-query';
 
 const Posts = () => {
-    const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const queryCache = useQueryCache();
+
     const [error, setError] = useState();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
     const [selectedPost, setSelectedPost] = useState(null);
-    useEffect(() => {
-        setLoading(true);
-        getPosts().then((data) => {
-            setPosts(data);
-            setLoading(false);
-        });
-    }, []);
+
+    const {isLoading, isFetching, data: posts = [], refetch} = useQuery('posts', getPosts);
+    const [editMutation, {}] = useMutation(editPost, {
+        onSuccess: () => queryCache.invalidateQueries('posts'),
+        onMutate: ({id, post}) => {
+            const oldPosts = queryCache.getQueryData('posts');
+            const newPosts = oldPosts.map(oldPost => {
+                if (oldPost.id === id) {
+                    return post;
+                }
+                return oldPost;
+            });
+            queryCache.setQueryData('posts', newPosts);
+        }
+    });
+    const [createMutation, {}] = useMutation(createPost, {
+        onSuccess: () => queryCache.invalidateQueries('posts'),
+        onMutate: (post) => {
+            const oldPosts = queryCache.getQueryData('posts');
+            const newPosts = [...oldPosts, post];
+            queryCache.setQueryData('posts', newPosts);
+        }
+    });
+    const [deleteMutation, {}] = useMutation(deletePost, {
+        onSuccess: () => queryCache.invalidateQueries('posts'),
+        onMutate: (id) => {
+            const oldPosts = queryCache.getQueryData('posts');
+            const newPosts = oldPosts.filter(oldPost => oldPost.id !== id);
+            queryCache.setQueryData('posts', newPosts);
+        }
+    });
 
     const openCreateModal = () => {
         setSelectedPost(null);
@@ -28,25 +54,13 @@ const Posts = () => {
 
     const closeEditModal = (post) => {
         if (!post) return;
-        setLoading(true);
-        editPost(post.id, post).then(() => {
-            getPosts().then((data) => {
-                setPosts(data);
-                setLoading(false);
-            });
-        })
+        editMutation({id: post.id, post});
     }
 
     
     const closeCreateModal = (post) => {
         if (!post) return;
-        setLoading(true);
-        createPost(post).then(() => {
-            getPosts().then((data) => {
-                setPosts(data);
-                setLoading(false);
-            });
-        })
+        createMutation(post);
     }
 
     const closeCreateEditModal = (post) => {
@@ -67,18 +81,12 @@ const Posts = () => {
 
     const closeDeleteModal = (confirmed) => {
         if (confirmed) {
-            deletePost(selectedPost.id).then(() => {
-                setLoading(true);
-                getPosts().then((data) => {
-                    setPosts(data);
-                    setLoading(false);
-                });
-            });
+            deleteMutation(selectedPost.id);
         }
         onDeleteClose();
     }
 
-    if (loading) {
+    if (isLoading) {
         return <div>
             <PostSkeleton />
             <PostSkeleton />

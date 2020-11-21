@@ -12,6 +12,7 @@
     "emotion-theming": "^10.0.27",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-query": "^2.26.3",
     "react-scripts": "4.0.0",
     "web-vitals": "^0.2.4"
   },

@@ -19,7 +19,7 @@ const createPost = (post) => {
     return fetchApi('POST', 'posts', post);
 }
 
-const editPost = (id, post) => {
+const editPost = ({id, post}) => {
     return fetchApi('PUT', `posts/${id}`, post);
 }
 
